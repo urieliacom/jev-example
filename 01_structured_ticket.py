@@ -1,4 +1,5 @@
 from typing import Literal
+from time import perf_counter
 
 from pydantic import BaseModel, Field
 
@@ -27,7 +28,9 @@ def main() -> None:
 
     # Schema-driven decisions with a Pydantic model.
     agent = laya.load("convaiinnovations/laya")
+    started_at = perf_counter()
     raw = agent.decide(message, schema=TicketDecision)
+    print(f"Decision took {perf_counter() - started_at:.2f} seconds")
     decision = TicketDecision.model_validate(raw)
 
     print(decision.model_dump_json(indent=2))
